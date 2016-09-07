@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MOBILE_FAVORITE" >
+  <resultMap id="BaseResultMap" class="com.lvmama.comm.pet.po.mobile.MobileFavorite" >
+    <result column="ID" property="id" />
+     <result column="USER_ID" property="userId" />
+    <result column="OBJECT_ID" property="objectId" />
+    <result column="OBJECT_TYPE" property="objectType" />
+    <result column="CREATED_TIME" property="createdTime" />
+    <result column="OBJECT_IMAGE_URL" property="objectImageUrl" />
+    <result column="OBJECT_NAME" property="objectName" />
+    <result column="IS_VALID" property="isValid" />
+    <result column="SNAPSHOT_SELL_PRICE" property="sellPrice" nullValue="0"/>
+    <result column="MARKET_SELL_PRICE" property="marketSellPrice"  nullValue="0"/>
+    <result column="CURRENT_VERSION" property="currentVersion"/>
+    <result column="DATA_FROM" property="dataFrom"/>
+    <result column="BRANCHTYPE" property="branchType"/>
+    <result column="ORIGIN_ID" property="originId"/>
+    <result column="COLLECTION_FROM" property="collectionFrom"/> 
+  </resultMap>
+   <resultMap id="ResultMapForGuideHome" extends="BaseResultMap" class="com.lvmama.comm.pet.po.mobile.MobileFavorite">
+    <result column="pin_yin_url" property="pinYinUrl" />
+  </resultMap>
+  <resultMap id="ResultMapForPlaceHome" extends="BaseResultMap" class="com.lvmama.comm.pet.po.mobile.MobileFavorite">
+    <result column="COMMENT_COUNT" property="commentCount" />
+    <result column="AVG_SCORE" property="avgScore" />
+    <result column="SELL_PRICE" property="sellPrice" />
+    <result column="pin_yin_url" property="pinYinUrl" />
+   </resultMap>
+   <resultMap id="ResultMapForProductHome" extends="BaseResultMap" class="com.lvmama.comm.pet.po.mobile.MobileFavorite">
+    <result column="COMMENT_COUNT" property="commentCount" />
+    <result column="AVG_SCORE" property="avgScore" />
+    <result column="SELL_PRICE" property="sellPrice" />
+   </resultMap>
+   <resultMap id="ResultMapForTuangouHome" extends="BaseResultMap" class="com.lvmama.comm.pet.po.mobile.MobileFavorite">
+   	<result column="SELL_PRICE" property="sellPrice" />
+   </resultMap>
+   
+   <resultMap class="java.util.HashMap" id="countByObjectTypeResultMap">
+   	<result property="objectType" column="object_type"  javaType="java.lang.String"/>
+   	<result property="count" column="count_num"  javaType="java.lang.Integer"/>
+   </resultMap>
+ 
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.lvmama.comm.pet.po.mobile.MobileFavorite" >
+    select ID, USER_ID,OBJECT_ID, OBJECT_TYPE, CREATED_TIME, OBJECT_IMAGE_URL, OBJECT_NAME, IS_VALID, SNAPSHOT_SELL_PRICE,MARKET_SELL_PRICE,CURRENT_VERSION,DATA_FROM,BRANCHTYPE,ORIGIN_ID,COLLECTION_FROM
+    from MOBILE_FAVORITE
+    where ID = #id#
+  </select>
+  <delete id="deleteByPrimaryKey" parameterClass="com.lvmama.comm.pet.po.mobile.MobileFavorite" >
+    delete from MOBILE_FAVORITE
+    where ID = #id#
+  </delete>
+   <delete id="deleteByKeyAndUserId" parameterClass="com.lvmama.comm.pet.po.mobile.MobileFavorite" >
+    delete from MOBILE_FAVORITE
+    where ID = #id# and USER_ID = #userId#
+  </delete>
+  
+  <delete id="deleteByObjectIdAndUserId" parameterClass="com.lvmama.comm.pet.po.mobile.MobileFavorite" >
+    delete from MOBILE_FAVORITE
+    where OBJECT_ID = #objectId# and USER_ID = #userId#
+  </delete>
+  
+  <delete id="deleteByMultipleOriginalArea" parameterClass="com.lvmama.comm.pet.po.mobile.MobileFavorite">
+	delete from MOBILE_FAVORITE
+	<dynamic prepend=" where ">
+		 <isNotEmpty property="userId" prepend=" and ">USER_ID = #userId# </isNotEmpty>	
+		 <isNotEmpty property="objectId" prepend=" and ">OBJECT_ID = #objectId# </isNotEmpty>	
+		 <isNotEmpty property="originId" prepend=" and ">ORIGIN_ID = #originId# </isNotEmpty>	
+	</dynamic>
+</delete>
+  
+  <insert id="insert" parameterClass="com.lvmama.comm.pet.po.mobile.MobileFavorite" >
+      <selectKey keyProperty="id" resultClass="java.lang.Long">
+		SELECT MOBILE_FAVORITE_ID_SEQ.nextval FROM DUAL
+      </selectKey>
+    insert into MOBILE_FAVORITE (ID,USER_ID, OBJECT_ID, OBJECT_TYPE, CREATED_TIME, OBJECT_IMAGE_URL,
+      OBJECT_NAME, IS_VALID, SNAPSHOT_SELL_PRICE, MARKET_SELL_PRICE, CURRENT_VERSION, DATA_FROM,BRANCHTYPE,ORIGIN_ID,collection_from)
+    values (#id#, #userId#,#objectId#, #objectType#, #createdTime#,
+      #objectImageUrl#, #objectName#, #isValid#, #sellPrice#, #marketSellPrice#, #currentVersion#, #dataFrom#,#branchType#,#originId#,#collectionFrom#)
+  </insert>
+  <insert id="insertSelective" parameterClass="com.lvmama.comm.pet.po.mobile.MobileFavorite" >
+    insert into MOBILE_FAVORITE
+    <dynamic prepend="(" >
+      <isNotNull prepend="," property="id" >
+        ID
+      </isNotNull>
+       <isNotNull prepend="," property="userId" >
+        USER_ID
+      </isNotNull>
+      <isNotNull prepend="," property="objectId" >
+        OBJECT_ID
+      </isNotNull>
+      <isNotNull prepend="," property="objectType" >
+        OBJECT_TYPE
+      </isNotNull>
+      <isNotNull prepend="," property="createdTime" >
+        CREATED_TIME
+      </isNotNull>
+      <isNotNull prepend="," property="objectImageUrl" >
+        OBJECT_IMAGE_URL
+      </isNotNull>
+      <isNotNull prepend="," property="objectName" >
+        OBJECT_NAME
+      </isNotNull>
+      <isNotNull prepend="," property="isValid" >
+        IS_VALID
+      </isNotNull>
+      )
+    </dynamic>
+    values
+    <dynamic prepend="(" >
+      <isNotNull prepend="," property="id" >
+       MOBILE_FAVORITE_ID_SEQ.nextval
+      </isNotNull>
+      <isNotNull prepend="," property="userId" >
+       USER_ID
+      </isNotNull>
+      <isNotNull prepend="," property="objectId" >
+        #objectId#
+      </isNotNull>
+      <isNotNull prepend="," property="objectType" >
+        #objectType#
+      </isNotNull>
+      <isNotNull prepend="," property="createdTime" >
+        #createdTime#
+      </isNotNull>
+      <isNotNull prepend="," property="objectImageUrl" >
+        #objectImageUrl#
+      </isNotNull>
+      <isNotNull prepend="," property="objectName" >
+        #objectName#
+      </isNotNull>
+      <isNotNull prepend="," property="isValid" >
+        #isValid#
+      </isNotNull>
+      )
+    </dynamic>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterClass="com.lvmama.comm.pet.po.mobile.MobileFavorite" >
+    update MOBILE_FAVORITE
+    <dynamic prepend="set" >
+        <isNotNull prepend="," property="userId" >
+        USER_ID = #userId#
+      </isNotNull>
+      <isNotNull prepend="," property="objectId" >
+        OBJECT_ID = #objectId#
+      </isNotNull>
+      <isNotNull prepend="," property="objectType" >
+        OBJECT_TYPE = #objectType#
+      </isNotNull>
+      <isNotNull prepend="," property="createdTime" >
+        CREATED_TIME = #createdTime#
+      </isNotNull>
+      <isNotNull prepend="," property="objectImageUrl" >
+        OBJECT_IMAGE_URL = #objectImageUrl#
+      </isNotNull>
+      <isNotNull prepend="," property="objectName" >
+        OBJECT_NAME = #objectName#
+      </isNotNull>
+      <isNotNull prepend="," property="isValid" >
+        IS_VALID = #isValid#
+      </isNotNull>
+    </dynamic>
+    where ID = #id#
+  </update>
+  <update id="updateByPrimaryKey" parameterClass="com.lvmama.comm.pet.po.mobile.MobileFavorite" >
+    update MOBILE_FAVORITE
+    set USER_ID = #userId#, 
+      OBJECT_ID = #objectId#,
+      OBJECT_TYPE = #objectType#,
+      CREATED_TIME = #createdTime#,
+      OBJECT_IMAGE_URL = #objectImageUrl#,
+      OBJECT_NAME = #objectName#,
+      IS_VALID = #isValid#
+    where ID = #id#
+  </update>
+  
+  
+  <!-- 分页查询 头部 -->
+  <sql id="pageHeader">
+		 SELECT * FROM (
+       SELECT A.*, ROWNUM RN FROM (
+  </sql>
+  
+  <!-- 分页查询 尾部 -->
+  <sql id="pageFooter">
+		 ) A
+	    <dynamic prepend="where">
+			<isNotEmpty property="endRows" prepend="and">
+				ROWNUM &lt;= #endRows#
+			</isNotEmpty>
+		</dynamic>
+	      )
+		<dynamic prepend="where">
+			<isNotEmpty property="startRows" prepend="and">
+				rn &gt;= #startRows#
+			</isNotEmpty>		
+		</dynamic>
+  </sql>
+  
+  <!-- 查询条件 -->
+  <sql id="queryListWhere">
+      <dynamic prepend=" WHERE ">
+		    <isNotEmpty property="id" prepend=" AND ">ID = #id#</isNotEmpty>
+		    <isNotEmpty property="userId" prepend=" AND ">USER_ID = #userId#</isNotEmpty>
+		    <isNotEmpty property="objectId" prepend=" AND ">OBJECT_ID = #objectId#</isNotEmpty>
+			<isNotEmpty property="objectName" prepend=" AND ">OBJECT_NAME like '%'||#objectName#||'%'</isNotEmpty>
+			<isNotEmpty property="isValid" prepend=" AND ">IS_VALID = #isValid#</isNotEmpty>
+			<isNotEmpty property="objectImageUrl" prepend=" AND ">OBJECT_IMAGE_URL like '%'||#objectImageUrl#||'%'</isNotEmpty>
+			<isNotEmpty property="objectType" prepend=" AND ">OBJECT_TYPE in (#objectType#)</isNotEmpty>
+			<isNotEmpty property="objectTypeList" prepend=" AND ">
+				OBJECT_TYPE in
+				<iterate property="objectTypeList" open="(" conjunction="," close=")" >
+					#objectTypeList[]#
+				</iterate>
+			</isNotEmpty>
+			<isNotEmpty property="startDate" prepend=" AND ">CREATED_TIME &gt;= #startDate#</isNotEmpty>
+			<isNotEmpty property="endDate" prepend=" AND ">CREATED_TIME &lt;= #endDate#</isNotEmpty>
+			<isNotNull property="dataFrom" prepend=" ">
+				<isEqual property="dataFrom" compareValue="VST" prepend=" AND ">DATA_FROM = 'VST'</isEqual>
+				<isNotEqual property="dataFrom" compareValue="VST" prepend=" AND ">DATA_FROM = 'SUPER'</isNotEqual>
+			</isNotNull>
+			<isNotEmpty property="branchType" prepend=" AND ">BRANCHTYPE = #branchType#</isNotEmpty>
+			<isNotEmpty property="originId" prepend=" AND ">ORIGIN_ID = #originId#</isNotEmpty>
+		</dynamic>
+  </sql>
+  
+  <!-- 查询列表  -->
+  <select id="queryFavoriterList" parameterClass="java.util.Map" resultMap="BaseResultMap">
+		<isNotEmpty property="isPaging">
+		  <include refid="pageHeader"/>
+		</isNotEmpty>
+		SELECT * FROM MOBILE_FAVORITE
+		<include refid="queryListWhere"/>
+		 order by CREATED_TIME desc
+		<isNotEmpty property="isPaging">
+		   <include refid="pageFooter"/>
+		   order by CREATED_TIME desc
+		</isNotEmpty>
+   </select>
+
+  
+    <!-- 总数  -->
+	<select id="countFavoriterList" resultClass="java.lang.Long" parameterClass="java.util.Map">
+		SELECT COUNT(*) FROM MOBILE_FAVORITE
+		<include refid="queryListWhere"/>
+	</select>
+	
+	<!-- 分品类查询总数  -->
+	<select id="countGroupByObjectType" resultMap="countByObjectTypeResultMap" parameterClass="java.util.Map">
+		SELECT OBJECT_TYPE, COUNT(*) as count_num FROM MOBILE_FAVORITE
+		<include refid="queryListWhere"/>
+		GROUP BY OBJECT_TYPE
+	</select>
+	
+	<!-- 查询place列表  网站首页我的收藏 -->
+	  <select id="queryFavoriterPlaceListForHome" parameterClass="java.util.Map" resultMap="ResultMapForPlaceHome">
+				     <include refid="pageHeader"/>
+				     SELECT   M.*,  nvl(PCS.AVG_SCORE, 0) AVG_SCORE, nvl(PCS.COMMENT_COUNT, 0) COMMENT_COUNT,p.pin_yin_url,
+				              case when m.snapshot_sell_price is not null then
+				                m.snapshot_sell_price
+				              else 
+				               ( select pso.products_price from lvmama_pet.place_search_info pso where pso.place_id=m.object_id and rownum&lt;1 )
+				              end   as sell_price
+			          FROM lvmama_pet.MOBILE_FAVORITE   M 
+			          LEFT JOIN   lvmama_pet.place  p on M.OBJECT_ID = p.place_id    
+			          LEFT JOIN   lvmama_pet.place_search_info  pso on M.OBJECT_ID = pso.place_id 
+			          LEFT JOIN lvmama_pet.vst_cmt_title_statistics PCS on PCS.PLACE_ID = M.OBJECT_ID 
+                    <dynamic prepend=" WHERE ">
+			         <isNotEmpty property="userId" prepend=" AND ">M.USER_ID = #userId#</isNotEmpty>
+ 			         <isNotEmpty property="objectType" prepend=" AND ">M.OBJECT_TYPE = #objectType#</isNotEmpty>
+ 			        </dynamic> 
+ 			        <include refid="pageFooter"/>
+	   </select>
+	  <!-- 查询Guide列表  网站首页我的收藏 -->
+	  <select id="queryFavoriterGuideListForHome" parameterClass="java.util.Map" resultMap="ResultMapForGuideHome">
+	  			 <include refid="pageHeader"/>
+			      SELECT   M.*, p.pin_yin_url
+		          FROM lvmama_pet.MOBILE_FAVORITE   M 
+		          LEFT JOIN   lvmama_pet.place  p on M.OBJECT_ID = p.place_id     
+                   <dynamic prepend=" WHERE ">
+			         <isNotEmpty property="userId" prepend=" AND ">M.USER_ID = #userId#</isNotEmpty>
+ 			         <isNotEmpty property="objectType" prepend=" AND ">M.OBJECT_TYPE = #objectType#</isNotEmpty>
+ 			        </dynamic> 
+ 			      <include refid="pageFooter"/>
+	   </select>
+	 <!-- 查询product列表  网站首页我的收藏 -->
+	  <select id="queryFavoriterProductListForHome" parameterClass="java.util.Map" resultMap="ResultMapForProductHome">
+	                   <include refid="pageHeader"/>
+	                 SELECT   M.*,  nvl(PCS.AVG_SCORE, 0) AVG_SCORE, nvl(PCS.COMMENT_COUNT, 0) COMMENT_COUNT, 
+                          case when m.snapshot_sell_price is not null then
+                                  m.snapshot_sell_price
+                                     else 
+                                      ( select pso.sell_price from lvmama_pet.product_search_info pso where pso.Product_Id=m.object_id and rownum&lt;1 )
+                                        end   as sell_price
+		               FROM lvmama_pet.MOBILE_FAVORITE   M      
+		               LEFT JOIN lvmama_pet.vst_cmt_title_statistics PCS on PCS.Product_Id = M.OBJECT_ID 
+                       <dynamic prepend=" WHERE ">
+				         <isNotEmpty property="userId" prepend=" AND ">M.USER_ID = #userId#</isNotEmpty>
+	 			         <isNotEmpty property="objectType" prepend=" AND ">M.OBJECT_TYPE = #objectType#</isNotEmpty>
+	 			       </dynamic> 
+	 			       <include refid="pageFooter"/>
+	   </select>
+	   <!-- 查询团购列表 网站首页我的收藏 -->
+	   <select id="queryFavoriteTuangouListForHome" parameterClass="java.util.Map" resultMap="ResultMapForTuangouHome">
+	   				   <include refid="pageHeader"/>
+				       SELECT M.*, 
+				       ( CASE M.BRANCHTYPE 
+				        WHEN 'sale-' THEN F.SPIKE_TYPE_PRICE 
+				        WHEN 'sale-v' THEN F.SPIKE_TYPE_PRICE 
+				        WHEN 'deal-' THEN F.GROUP_PRICE 
+				        WHEN 'deal-v' THEN F.GROUP_PRICE 
+				        ELSE F.GROUP_PRICE END ) as SELL_PRICE 
+		               FROM lvmama_pet.MOBILE_FAVORITE M      
+                       LEFT JOIN lvmama_super.unity_product_branch  F on M.OBJECT_ID = F.SUPP_GOODS_ID	
+                       WHERE 
+                       F.PLATFORM = 'VST'
+                       AND F.BRANCH_TYPE = 
+                        ( CASE M.BRANCHTYPE WHEN 'sale-' THEN 'PROD' WHEN 'deal-' THEN 'PROD' 
+                        WHEN 'sale-v' THEN 'BRANCH' WHEN 'deal-v' THEN 'BRANCH' ELSE 'BRANCH' END ) 
+                       <dynamic>
+				         <isNotEmpty property="userId" prepend=" AND ">M.USER_ID = #userId#</isNotEmpty>
+	 			         <isNotEmpty property="objectType" prepend=" AND ">M.OBJECT_TYPE = #objectType#</isNotEmpty>
+	 			       </dynamic> 
+	 			       <include refid="pageFooter"/>
+	   </select>
+	   
+	   <select id="favoriteStatistics" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+	   	SELECT COUNT(ID) FROM MOBILE_FAVORITE WHERE OBJECT_ID = #objectId#
+	   	<dynamic>
+	   		<isNotEmpty property="collectionFrom" prepend=" AND ">COLLECTION_FROM = #collectionFrom#</isNotEmpty>
+	   	</dynamic>
+	   </select>
+</sqlMap>
