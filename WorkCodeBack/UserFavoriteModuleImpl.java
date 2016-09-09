@@ -246,6 +246,7 @@ public class UserFavoriteModuleImpl implements IUserFavoriteModule {
 		List<MobileFavorite> mfList = mobileFavoriteService.queryMobileFavoriteList(param);
 		this.logger.info(LOG_PREFIX + "Call the mobileFavoriteService.queryMobileFavoriteList , the result(List<MobileFavorite>) of size is " + (null == mfList? 0 : mfList.size()));
 		if (null == mfList || mfList.isEmpty()) {
+			mobileMyFavoritesResult.setSuccess(true);
 			return mobileMyFavoritesResult;//未查询到收藏信息，直接返回empty对象
 		}
 		
@@ -423,13 +424,13 @@ public class UserFavoriteModuleImpl implements IUserFavoriteModule {
 				
 				//地址
 				String address = bean.getAddress();
-				if (StringUtils.isNotBlank(address)) {
+				/*if (StringUtils.isNotBlank(address)) {
 					if (address.indexOf("(") > -1 && address.indexOf(")") > -1) {// 英文括号
 						address = address.substring(address.indexOf("(") + 1, address.indexOf(")"));
 					} else if (address.indexOf("（") > -1 && address.indexOf("）") > -1) {// 中文括号
 						address = address.substring(address.indexOf("（") + 1, address.indexOf("）"));
 					}
-				}
+				}*/
 				mfVo.setAddress(address);
 				
 				//免费wifi和免费停车

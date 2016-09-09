@@ -94,26 +94,30 @@ public class MyFavoritesNewAction extends BaseAction{
 		favoriteRequest.setUserId(13257L);//测试代码
 		
 		
-		favoriteRequest.setObjectType("ALL");
-		
+		favoriteRequest.setObjectType("ALL");//按品类分组，查询所有品类的分数量
 		this.eachObjectTypeCount = this.userFavoriteModule.countGroupByObjectType(favoriteRequest);
 		this.calEachTypeCount(eachObjectTypeCount);//计算各品类的数量
 		
 		//3、当前条件下，总记录数查询
-		Integer totalCount =  "ALL".equalsIgnoreCase(objectType) ? this.allCount : 
-			this.eachObjectTypeCount.get(objectType);
-		pager = new Page<MyFavoritesVO>(null == totalCount ? 0 : totalCount);
+		long totalCount = 0;
+		if(null == objectType || "all".equalsIgnoreCase(objectType.trim())){
+			objectType = "all";//默认不分品类展示，既显示全部
+			totalCount = this.allCount;
+		}else{
+			Integer curTypeCount = this.eachObjectTypeCount.get(objectType);
+			totalCount = (null == curTypeCount) ? 0 : curTypeCount.longValue();
+		}
 		
-		//4、设置分页信息
-		pager.setUrl("/myspace/share/favorites.do?objectType="+this.objectType+"&pageNo="+this.pageNo);
-		pager.setCurrentPage(Long.parseLong(pageNo.toString()));
-		pager.setPageSize(pageSize);
-		
-		//5、查询当页数据
-		if(null != totalCount && totalCount > 0){
+		if(totalCount > 0){//存在数据，则根据当前条件取回数据到页面展示
+			//4、设置分页信息
+			pager = new Page<MyFavoritesVO>(totalCount, Long.parseLong(pageNo.toString()));
+			pager.setUrl("/myspace/share/favorites.do?objectType="+this.objectType+"&pageNo="+this.pageNo);
+			pager.setPageSize(pageSize);
+			
+			//5、查询当页数据
 			favoriteRequest.setPageNum(pageNo);
 			favoriteRequest.setPageSize(pageSize);
-			favoriteRequest.setObjectType(objectType);
+			favoriteRequest.setObjectType(objectType);//设置为当前品类，只获取当前品类的数据
 			
 			//FavoritesResult favorites = userFavoriteModule.queryFavoriteList(favoriteRequest);
 			//pager.setItems(favorites.getFavorities());
@@ -147,6 +151,8 @@ public class MyFavoritesNewAction extends BaseAction{
 					mfVo.setIsSoldOut((short)0);
 				}
 				favoriteVoList.add(mfVo);
+				mfVo.setHotelWifi(true);
+				mfVo.setAddress("true");
 				i++;
 				
 			}
