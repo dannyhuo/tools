@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.scrum.dao.mysql.DailyLineProblemMapper" >
+  <resultMap id="BaseResultMap" type="com.scrum.model.DailyLineProblem" >
+    <id column="line_problem_id" property="lineProblemId" jdbcType="BIGINT" />
+    <result column="line_problem_no" property="lineProblemNo" jdbcType="CHAR" />
+    <result column="problem_describe" property="problemDescribe" jdbcType="VARCHAR" />
+    <result column="problem_analysis" property="problemAnalysis" jdbcType="VARCHAR" />
+    <result column="ways_of_resolution" property="waysOfResolution" jdbcType="VARCHAR" />
+    <result column="processor" property="processor" jdbcType="VARCHAR" />
+    <result column="watch" property="watch" jdbcType="VARCHAR" />
+    <result column="is_solved" property="isSolved" jdbcType="CHAR" />
+    <result column="solved_time" property="solvedTime" jdbcType="TIMESTAMP" />
+    <result column="is_repeat" property="isRepeat" jdbcType="CHAR" />
+    <result column="need_follow_up" property="needFollowUp" jdbcType="CHAR" />
+    <result column="report_time" property="reportTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    line_problem_id, line_problem_no, problem_describe, problem_analysis, ways_of_resolution, 
+    processor, watch, is_solved, solved_time, is_repeat, need_follow_up, report_time, 
+    create_time, update_time, remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from daily_line_problem
+    where line_problem_id = #{lineProblemId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from daily_line_problem
+    where line_problem_id = #{lineProblemId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.scrum.model.DailyLineProblem" >
+    insert into daily_line_problem (line_problem_id, line_problem_no, problem_describe, 
+      problem_analysis, ways_of_resolution, processor, 
+      watch, is_solved, solved_time, 
+      is_repeat, need_follow_up, report_time, 
+      create_time, update_time, remark
+      )
+    values (#{lineProblemId,jdbcType=BIGINT}, #{lineProblemNo,jdbcType=CHAR}, #{problemDescribe,jdbcType=VARCHAR}, 
+      #{problemAnalysis,jdbcType=VARCHAR}, #{waysOfResolution,jdbcType=VARCHAR}, #{processor,jdbcType=VARCHAR}, 
+      #{watch,jdbcType=VARCHAR}, #{isSolved,jdbcType=CHAR}, #{solvedTime,jdbcType=TIMESTAMP}, 
+      #{isRepeat,jdbcType=CHAR}, #{needFollowUp,jdbcType=CHAR}, #{reportTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.scrum.model.DailyLineProblem" >
+    insert into daily_line_problem
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="lineProblemId != null" >
+        line_problem_id,
+      </if>
+      <if test="lineProblemNo != null" >
+        line_problem_no,
+      </if>
+      <if test="problemDescribe != null" >
+        problem_describe,
+      </if>
+      <if test="problemAnalysis != null" >
+        problem_analysis,
+      </if>
+      <if test="waysOfResolution != null" >
+        ways_of_resolution,
+      </if>
+      <if test="processor != null" >
+        processor,
+      </if>
+      <if test="watch != null" >
+        watch,
+      </if>
+      <if test="isSolved != null" >
+        is_solved,
+      </if>
+      <if test="solvedTime != null" >
+        solved_time,
+      </if>
+      <if test="isRepeat != null" >
+        is_repeat,
+      </if>
+      <if test="needFollowUp != null" >
+        need_follow_up,
+      </if>
+      <if test="reportTime != null" >
+        report_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="lineProblemId != null" >
+        #{lineProblemId,jdbcType=BIGINT},
+      </if>
+      <if test="lineProblemNo != null" >
+        #{lineProblemNo,jdbcType=CHAR},
+      </if>
+      <if test="problemDescribe != null" >
+        #{problemDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="problemAnalysis != null" >
+        #{problemAnalysis,jdbcType=VARCHAR},
+      </if>
+      <if test="waysOfResolution != null" >
+        #{waysOfResolution,jdbcType=VARCHAR},
+      </if>
+      <if test="processor != null" >
+        #{processor,jdbcType=VARCHAR},
+      </if>
+      <if test="watch != null" >
+        #{watch,jdbcType=VARCHAR},
+      </if>
+      <if test="isSolved != null" >
+        #{isSolved,jdbcType=CHAR},
+      </if>
+      <if test="solvedTime != null" >
+        #{solvedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isRepeat != null" >
+        #{isRepeat,jdbcType=CHAR},
+      </if>
+      <if test="needFollowUp != null" >
+        #{needFollowUp,jdbcType=CHAR},
+      </if>
+      <if test="reportTime != null" >
+        #{reportTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.scrum.model.DailyLineProblem" >
+    update daily_line_problem
+    <set >
+      <if test="lineProblemNo != null" >
+        line_problem_no = #{lineProblemNo,jdbcType=CHAR},
+      </if>
+      <if test="problemDescribe != null" >
+        problem_describe = #{problemDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="problemAnalysis != null" >
+        problem_analysis = #{problemAnalysis,jdbcType=VARCHAR},
+      </if>
+      <if test="waysOfResolution != null" >
+        ways_of_resolution = #{waysOfResolution,jdbcType=VARCHAR},
+      </if>
+      <if test="processor != null" >
+        processor = #{processor,jdbcType=VARCHAR},
+      </if>
+      <if test="watch != null" >
+        watch = #{watch,jdbcType=VARCHAR},
+      </if>
+      <if test="isSolved != null" >
+        is_solved = #{isSolved,jdbcType=CHAR},
+      </if>
+      <if test="solvedTime != null" >
+        solved_time = #{solvedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isRepeat != null" >
+        is_repeat = #{isRepeat,jdbcType=CHAR},
+      </if>
+      <if test="needFollowUp != null" >
+        need_follow_up = #{needFollowUp,jdbcType=CHAR},
+      </if>
+      <if test="reportTime != null" >
+        report_time = #{reportTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where line_problem_id = #{lineProblemId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.scrum.model.DailyLineProblem" >
+    update daily_line_problem
+    set line_problem_no = #{lineProblemNo,jdbcType=CHAR},
+      problem_describe = #{problemDescribe,jdbcType=VARCHAR},
+      problem_analysis = #{problemAnalysis,jdbcType=VARCHAR},
+      ways_of_resolution = #{waysOfResolution,jdbcType=VARCHAR},
+      processor = #{processor,jdbcType=VARCHAR},
+      watch = #{watch,jdbcType=VARCHAR},
+      is_solved = #{isSolved,jdbcType=CHAR},
+      solved_time = #{solvedTime,jdbcType=TIMESTAMP},
+      is_repeat = #{isRepeat,jdbcType=CHAR},
+      need_follow_up = #{needFollowUp,jdbcType=CHAR},
+      report_time = #{reportTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR}
+    where line_problem_id = #{lineProblemId,jdbcType=BIGINT}
+  </update>
+</mapper>

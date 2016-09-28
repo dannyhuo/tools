@@ -1,0 +1,135 @@
+使用 java 进行文件拷贝 相信很多人都会用,,不过效率上是否最好呢?
+最近看了看NIO决定试一试 java  NIO 到底有什么性能的提升.
+
+第一种方法:古老的方式
+ public static long forJava(File f1,File f2) throws Exception{
+  long time=new Date().getTime();
+  int length=2097152;
+  FileInputStream in=new FileInputStream(f1);
+  FileOutputStream out=new FileOutputStream(f2);
+  byte[] buffer=new byte[length];
+  while(true){
+   int ins=in.read(buffer);
+   if(ins==-1){
+    in.close();
+    out.flush();
+    out.close();
+    return new Date().getTime()-time;
+   }else
+    out.write(buffer,0,ins);
+  }
+ }
+
+方法的2参数分别是原始文件,和拷贝的目的文件.这里不做过多介绍.
+
+实现方法很简单,分别对2个文件构建输入输出流,并且使用一个字节数组作为我们内存的缓存器, 然后使用流从f1 中读出数据到缓存里,在将缓存数据写到f2里面去.这里的缓存是2MB的字节数组
+
+第2种方法:使用NIO中的管道到管道传输
+    public static long forTransfer(File f1,File f2) throws Exception{
+        long time=new Date().getTime();
+        int length=2097152;
+        FileInputStream in=new FileInputStream(f1);
+        FileOutputStream out=new FileOutputStream(f2);
+        FileChannel inC=in.getChannel();
+        FileChannel outC=out.getChannel();
+        int i=0;
+        while(true){
+            if(inC.position()==inC.size()){
+                inC.close();
+                outC.close();
+                return new Date().getTime()-time;
+            }
+            if((inC.size()-inC.position())<20971520)
+                length=(int)(inC.size()-inC.position());
+            else
+                length=20971520;
+            inC.transferTo(inC.position(),length,outC);
+            inC.position(inC.position()+length);
+            i++;
+        }
+    }
+
+实现方法:在第一种实现方法基础上对输入输出流获得其管道,然后分批次的从f1的管道中像f2的管道中输入数据每次输入的数据最大为2MB
+
+方法3:内存文件景象写(读文件没有使用文件景象,有兴趣的可以回去试试,,我就不试了,估计会更快)
+    public static long forImage(File f1,File f2) throws Exception{
+        long time=new Date().getTime();
+        int length=2097152;
+        FileInputStream in=new FileInputStream(f1);
+        RandomAccessFile out=new RandomAccessFile(f2,"rw");
+        FileChannel inC=in.getChannel();
+        MappedByteBuffer outC=null;
+        MappedByteBuffer inbuffer=null;
+        byte[] b=new byte[length];
+        while(true){
+            if(inC.position()==inC.size()){
+                inC.close();
+                outC.force();
+                out.close();
+                return new Date().getTime()-time;
+            }
+            if((inC.size()-inC.position())<length){
+                length=(int)(inC.size()-inC.position());
+            }else{
+                length=20971520;
+            }
+            b=new byte[length];
+            inbuffer=inC.map(MapMode.READ_ONLY,inC.position(),length);
+            inbuffer.load();
+            inbuffer.get(b);
+            outC=out.getChannel().map(MapMode.READ_WRITE,inC.position(),length);
+            inC.position(b.length+inC.position());
+            outC.put(b);
+            outC.force();
+        }
+    }
+
+实现方法:跟伤2个例子不一样,这里写文件流没有使用管道而是使用内存文件映射(假设文件f2在内存中).在循环中从f1的管道中读取数据到字节数组里,然后在像内存映射的f2文件中写数据.
+
+第4种方法:管道对管道
+    public static long forChannel(File f1,File f2) throws Exception{
+        long time=new Date().getTime();
+        int length=2097152;
+        FileInputStream in=new FileInputStream(f1);
+        FileOutputStream out=new FileOutputStream(f2);
+        FileChannel inC=in.getChannel();
+        FileChannel outC=out.getChannel();
+        ByteBuffer b=null;
+        while(true){
+            if(inC.position()==inC.size()){
+                inC.close();
+                outC.close();
+                return new Date().getTime()-time;
+            }
+            if((inC.size()-inC.position())<length){
+                length=(int)(inC.size()-inC.position());
+            }else
+                length=2097152;
+            b=ByteBuffer.allocateDirect(length);
+            inC.read(b);
+            b.flip();
+            outC.write(b);
+            outC.force(false);
+        }
+    }
+
+这里实现方式与第3种实现方式很类似,不过没有使用内存影射.
+
+ 
+
+下面是对49.3MB的文件进行拷贝的测试时间(毫秒)
+
+Start Copy File...  file size:50290KB
+CopyFile:b1.rmvb mode:forChannel  RunTime:3203
+CopyFile:b1.rmvb mode:forImage  RunTime:3328
+CopyFile:b1.rmvb mode:forJava  RunTime:2172
+CopyFile:b1.rmvb mode:forTransfer RunTime:1406
+End Copy File!
+
+解释: 在测试结果中看到 古老方式,和管道向管道传输是最快的,,,,,为什么呢?
+
+我分析是这样的,由于另外2种方法内部都使用了 字节数组作为缓存中转,在加上NIO内部有一个贴近系统的缓存区,这无意就增加了另一个缓存器,所以相对于这2个方法就要慢许多,,如果不使用 字节数组作为数据中转的话相信速度会更快的..
+
+不过比较惊讶的是 管道向管道传输的速度还是真挺吓人,,, 
+
+我的机器是 IDE硬盘120G 硬盘缓存2MB, 内存1GB, CPU AMD2800+

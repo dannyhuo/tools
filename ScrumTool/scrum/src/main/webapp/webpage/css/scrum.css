@@ -1,0 +1,57 @@
+.status_bar{
+	width:100%;
+	height:30px;
+	background-color: #ffffff;
+	display: block;
+	font-size: 12px;
+}
+
+.status_bar div{
+	width:1200px;
+	height:30px;
+	display: block;
+	border:0px;
+	text-align: left;
+	font-size: 12px;
+	padding-top: 6px;
+}
+
+.my_main{
+	width:924px;
+	min-height:600px;
+	float:right;
+	background: #ffffff;
+	padding: 30 50 0 50;
+}
+
+.my_main table{
+	margin-top: 30px;
+}
+
+.my_main th{
+	background: #f5f5f5 none repeat scroll 0 0;
+	color:#cccccc;
+}
+
+.my_main tr{
+	height:60px;
+	font-size:12px;
+	background-color: #ffffff;
+	cursor: pointer;
+}
+
+.my_main input{
+	border:1px solid #cccccc;
+	width:260px;
+}
+
+.my_main select{
+	border:1px solid #cccccc;
+	width:260px;
+}
+
+
+.myAddTaskItemDialog{
+	width:80%;
+	z-index: 1000;
+}

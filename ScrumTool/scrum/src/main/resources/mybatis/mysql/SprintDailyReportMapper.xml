@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.scrum.dao.mysql.SprintDailyReportMapper" >
+  <resultMap id="BaseResultMap" type="com.scrum.model.SprintDailyReport" >
+    <id column="report_id" property="reportId" jdbcType="BIGINT" />
+    <result column="report_no" property="reportNo" jdbcType="CHAR" />
+    <result column="sprint_id" property="sprintId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="yesterday_report" property="yesterdayReport" jdbcType="VARCHAR" />
+    <result column="today_plan" property="todayPlan" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    report_id, report_no, sprint_id, user_id, yesterday_report, today_plan, remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sprint_daily_report
+    where report_id = #{reportId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sprint_daily_report
+    where report_id = #{reportId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.scrum.model.SprintDailyReport" >
+    insert into sprint_daily_report (report_id, report_no, sprint_id, 
+      user_id, yesterday_report, today_plan, 
+      remark)
+    values (#{reportId,jdbcType=BIGINT}, #{reportNo,jdbcType=CHAR}, #{sprintId,jdbcType=BIGINT}, 
+      #{userId,jdbcType=BIGINT}, #{yesterdayReport,jdbcType=VARCHAR}, #{todayPlan,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.scrum.model.SprintDailyReport" >
+    insert into sprint_daily_report
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="reportId != null" >
+        report_id,
+      </if>
+      <if test="reportNo != null" >
+        report_no,
+      </if>
+      <if test="sprintId != null" >
+        sprint_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="yesterdayReport != null" >
+        yesterday_report,
+      </if>
+      <if test="todayPlan != null" >
+        today_plan,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="reportId != null" >
+        #{reportId,jdbcType=BIGINT},
+      </if>
+      <if test="reportNo != null" >
+        #{reportNo,jdbcType=CHAR},
+      </if>
+      <if test="sprintId != null" >
+        #{sprintId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="yesterdayReport != null" >
+        #{yesterdayReport,jdbcType=VARCHAR},
+      </if>
+      <if test="todayPlan != null" >
+        #{todayPlan,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.scrum.model.SprintDailyReport" >
+    update sprint_daily_report
+    <set >
+      <if test="reportNo != null" >
+        report_no = #{reportNo,jdbcType=CHAR},
+      </if>
+      <if test="sprintId != null" >
+        sprint_id = #{sprintId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="yesterdayReport != null" >
+        yesterday_report = #{yesterdayReport,jdbcType=VARCHAR},
+      </if>
+      <if test="todayPlan != null" >
+        today_plan = #{todayPlan,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where report_id = #{reportId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.scrum.model.SprintDailyReport" >
+    update sprint_daily_report
+    set report_no = #{reportNo,jdbcType=CHAR},
+      sprint_id = #{sprintId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      yesterday_report = #{yesterdayReport,jdbcType=VARCHAR},
+      today_plan = #{todayPlan,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where report_id = #{reportId,jdbcType=BIGINT}
+  </update>
+</mapper>

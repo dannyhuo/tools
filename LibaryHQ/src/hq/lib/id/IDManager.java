@@ -30,7 +30,7 @@ public class IDManager {
 		StringBuilder sb = new StringBuilder();
 		Random random = new Random();
 		for(int i = 0; i < missLen; i++){
-			sb.append(idChars[random.nextInt(10)]);
+			sb.append(idChars[random.nextInt(16)]);
 		}
 		return time + sb.toString();
 	};
