@@ -24,20 +24,25 @@
 	padding: 30 50 0 50;
 }
 
-.my_main table{
+.my_task_table{
 	margin-top: 30px;
 }
 
-.my_main th{
+.my_task_table th{
 	background: #f5f5f5 none repeat scroll 0 0;
 	color:#cccccc;
+	height:30px;
 }
 
-.my_main tr{
-	height:60px;
+.my_task_tr{
+	height:26px;
 	font-size:12px;
 	background-color: #ffffff;
 	cursor: pointer;
+}
+.my_task_item_tr{
+	background-color: #ffffff;
+	border:none;
 }
 
 .my_main input{
@@ -52,6 +57,33 @@
 
 
 .myAddTaskItemDialog{
-	width:80%;
+	width:700px;
 	z-index: 1000;
+	border: 1px solid #cccccc;
+	background-color: #ffffff;
+	left: 600px;
+	top: 300px;
+}
+
+.myAddTaskItemDialog tr{
+	height:50px;
+}
+
+.myAddTaskItemDialog input{
+	border: 1px solid #cccccc;
+	width:450px;
+	height:26px;
+}
+
+.my_task_item_table{
+	width:100%;
+	background: #f5f5f5 none repeat scroll 0 0;
+	color: #cccccc;
+	font-size: 12px;
+	font-family: serif;
+}
+
+.my_task_item_table th{
+	background-color: #cccccc;
+	color: #ffffff;
 }

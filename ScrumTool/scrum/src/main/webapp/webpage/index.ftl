@@ -25,7 +25,7 @@
 					</select>
 				</form>
 				<#if tasks?has_content>
-					<table cellspacing="1px" cellpadding="0" border="1px solid #cccccc;" width="100%">
+					<table class="my_task_table" cellspacing="1px" cellpadding="0" border="1px solid #cccccc;" width="100%">
 						<tr>
 							<th>任务ID</th>
 							<th>任务编号</th>
@@ -37,16 +37,17 @@
 							<th>操作</th>
 						</tr>
 						<#list tasks as task>
-							<tr onclick="showTaskItem(${task.taskId});">
+							<tr class="my_task_tr">
 								<td>${task.taskId}</td>
-								<td>${task.taskNo}</td>
+								<td><a title="点击查看任务拆分" href="javascript:showTaskItem(${task.taskId});">${task.taskNo}</a>&nbsp;&nbsp;</td>
 								<td>${task.taskName}</td>
 								<td>${task.sprintId}</td>
 								<td>${task.elapsedTime}</td>
 								<td>${(task?if_exists.createTime?string('yyyy-MM-dd HH:mm:ss'))!''}</td>
 								<td>${task.remark}</td>
-								<td onclick="showTaskItemDialog(${task.taskId})" style="cursor:pointer">添加拆分</td>
+								<td><a href="javascript:showTaskItemDialog(${task.taskId})">添加拆分</a></td>
 							</tr>
+							<tr><td colspan="8" id="${task.taskId}" title="双击收起任务拆分" ondblclick="javascript:this.innerHTML = ''"></td></tr>
 						</#list>
 					</table>
 				</#if>
@@ -56,9 +57,9 @@
 		
 		<!--添加task item弹窗-->
 		<div id="my_add_task_item_dialog" class="myAddTaskItemDialog" style="display:none;">
-			<form action="/scrum/sprintTaskItem/doCreateTaskItem.do" method="post">
-				<table cellspacing="0" cellpadding="0" border="0" width="80%">
-					<tr><td colspan="3" height="30"></td></tr>
+			<form id="myAddTaskItemForm" action="/scrum/sprintTaskItem/doCreateTaskItem.do" method="post">
+				<table cellspacing="0" cellpadding="0" border="0" width="100%">
+					<tr><td colspan="3" height="30" align="right" valign="top"><a href="javascript:closeTaskItemDialog();">X</a></td></tr>
 					<tr>
 						<td align="right">任务ID</td>
 						<td width="30"></td>

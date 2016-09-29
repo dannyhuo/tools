@@ -63,7 +63,7 @@ public class SprintTaskItemController {
 		List<SprintTaskItem> taskItems = sprintTaskItemService.querySprintTaskItem(sprintTaskItem);
 		
 		JSONArray jsonArray = JSONArray.fromObject(taskItems);
-		
+		response.setCharacterEncoding("UTF-8");//设置输入字符格式
 		try {
 			response.getWriter().write(jsonArray.toString());
 		} catch (IOException e) {
