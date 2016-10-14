@@ -7,6 +7,8 @@ public class ScrumUser {
 
     private String userNo;
 
+    private Long teamId;
+    
     private String userName;
 
     private String password;
@@ -43,7 +45,15 @@ public class ScrumUser {
         this.userNo = userNo == null ? null : userNo.trim();
     }
 
-    public String getUserName() {
+    public Long getTeamId() {
+		return teamId;
+	}
+
+	public void setTeamId(Long teamId) {
+		this.teamId = teamId;
+	}
+
+	public String getUserName() {
         return userName;
     }
 

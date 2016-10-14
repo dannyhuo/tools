@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS `scrum_user`;
 CREATE TABLE `scrum_user` (
 `user_id`  bigint(11) NOT NULL AUTO_INCREMENT COMMENT 'PK' ,
 `user_no`  char(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户32位16进制ID' ,
+`team_id`  bigint(11) COMMENT 'FK' ,
 `user_name`  varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '登录名' ,
 `password`  varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '密码' ,
 `safety_factor`  varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '安全因子，用于密码安全' ,
@@ -28,6 +29,7 @@ CREATE INDEX `IDX_SCRUM_USER_NO` ON `scrum_user`(`user_no`) USING BTREE ;
 CREATE INDEX `IDX_SCRUM_USER_USER_NAME` ON `scrum_user`(`user_name`) USING BTREE ;
 CREATE INDEX `IDX_SCRUM_USER_REAL_NAME` ON `scrum_user`(`real_name`) USING BTREE ;
 CREATE INDEX `IDX_SCRUM_USER_EMAIL` ON `scrum_user`(`email`) USING BTREE ;
+CREATE INDEX `IDX_SCRUM_USER_TEAM_ID` ON `scrum_user`(`team_id`) USING BTREE ;
 
 
 -- ----------------------------
@@ -36,6 +38,7 @@ CREATE INDEX `IDX_SCRUM_USER_EMAIL` ON `scrum_user`(`email`) USING BTREE ;
 DROP TABLE IF EXISTS `scrum_sprint`;
 CREATE TABLE `scrum_sprint` (
 `sprint_id`  bigint(11) NOT NULL AUTO_INCREMENT COMMENT 'PK' ,
+`team_id`  bigint(11) COMMENT '所属于团队ID' ,
 `team_name`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '团队名称' ,
 `sprint_name`  varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '迭代名称' ,
 `mail_to` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '晨会邮件发送人，多人以逗号隔开' ,
@@ -54,6 +57,7 @@ COMMENT='消费者'
 --创建索引
 CREATE INDEX `IDX_SCRUM_SPRINT_TEAM_NAME` ON `scrum_sprint`(`team_name`) USING BTREE ;
 CREATE INDEX `IDX_SCRUM_SPRINT_SPRINT_NAME` ON `scrum_sprint`(`sprint_name`) USING BTREE ;
+CREATE INDEX `IDX_SCRUM_SPRINT_TEAM_ID` ON `scrum_sprint`(`team_id`) USING BTREE ;
 
 
 

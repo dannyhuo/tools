@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.scrum.model.ScrumUser" >
     <id column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="user_no" property="userNo" jdbcType="CHAR" />
+    <result column="team_id" property="teamId" jdbcType="BIGINT" /> 
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="safety_factor" property="safetyFactor" jdbcType="VARCHAR" />
@@ -16,7 +17,7 @@
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    user_id, user_no, user_name, password, safety_factor, real_name, role, email, gender, 
+    user_id, user_no, team_id, user_name, password, safety_factor, real_name, role, email, gender, 
     create_time, update_time, remark
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -30,11 +31,11 @@
     where user_id = #{userId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.scrum.model.ScrumUser" >
-    insert into scrum_user (user_id, user_no, user_name, 
+    insert into scrum_user (user_id, user_no, team_id, user_name, 
       password, safety_factor, real_name, 
       role, email, gender, create_time, 
       update_time, remark)
-    values (#{userId,jdbcType=BIGINT}, #{userNo,jdbcType=CHAR}, #{userName,jdbcType=VARCHAR}, 
+    values (#{userId,jdbcType=BIGINT}, #{userNo,jdbcType=CHAR}, #{teamId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{safetyFactor,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, 
       #{role,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{gender,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
@@ -47,6 +48,9 @@
       </if>
       <if test="userNo != null" >
         user_no,
+      </if>
+      <if test="teamId != null" >
+        team_id,
       </if>
       <if test="userName != null" >
         user_name,
@@ -86,6 +90,9 @@
       <if test="userNo != null" >
         #{userNo,jdbcType=CHAR},
       </if>
+      <if test="teamId != null" >
+        #{teamId,jdbcType=BIGINT},
+      </if>
       <if test="userName != null" >
         #{userName,jdbcType=VARCHAR},
       </if>
@@ -124,6 +131,9 @@
       <if test="userNo != null" >
         user_no = #{userNo,jdbcType=CHAR},
       </if>
+      <if test="teamId != null" >
+        team_id = #{teamId,jdbcType=BIGINT},
+      </if>
       <if test="userName != null" >
         user_name = #{userName,jdbcType=VARCHAR},
       </if>
@@ -160,6 +170,7 @@
   <update id="updateByPrimaryKey" parameterType="com.scrum.model.ScrumUser" >
     update scrum_user
     set user_no = #{userNo,jdbcType=CHAR},
+      team_id = #{teamId,jdbcType=BIGINT},
       user_name = #{userName,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       safety_factor = #{safetyFactor,jdbcType=VARCHAR},
@@ -172,4 +183,49 @@
       remark = #{remark,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
+  
+  
+  
+  <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.scrum.model.ScrumUser" >
+    select 
+    <include refid="Base_Column_List" />
+    from scrum_user
+    where 1 = 1 
+    <if test="userNo != null" >
+      and user_no = #{userNo,jdbcType=CHAR}
+    </if>
+    <if test="teamId != null" >
+      and team_id = #{teamId,jdbcType=BIGINT}
+    </if>
+    <if test="userName != null" >
+      and user_name = #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="password != null" >
+      and password = #{password,jdbcType=VARCHAR}
+    </if>
+    <if test="safetyFactor != null" >
+      and safety_factor = #{safetyFactor,jdbcType=VARCHAR}
+    </if>
+    <if test="realName != null" >
+      and real_name = #{realName,jdbcType=VARCHAR}
+    </if>
+    <if test="role != null" >
+      and role = #{role,jdbcType=VARCHAR}
+    </if>
+    <if test="email != null" >
+      and email = #{email,jdbcType=VARCHAR}
+    </if>
+    <if test="gender != null" >
+      and gender = #{gender,jdbcType=CHAR}
+    </if>
+    <if test="createTime != null" >
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateTime != null" >
+      and update_time = #{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="remark != null" >
+      and remark = #{remark,jdbcType=VARCHAR}
+    </if>
+  </select>
 </mapper>

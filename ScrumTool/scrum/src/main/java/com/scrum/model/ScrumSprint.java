@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class ScrumSprint {
     private Long sprintId;
+    
+    private Long teamId;
 
     private String teamName;
 
@@ -31,7 +33,15 @@ public class ScrumSprint {
         this.sprintId = sprintId;
     }
 
-    public String getTeamName() {
+    public Long getTeamId() {
+		return teamId;
+	}
+
+	public void setTeamId(Long teamId) {
+		this.teamId = teamId;
+	}
+
+	public String getTeamName() {
         return teamName;
     }
 

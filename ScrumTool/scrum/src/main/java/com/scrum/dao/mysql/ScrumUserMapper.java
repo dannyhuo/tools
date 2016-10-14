@@ -1,5 +1,7 @@
 package com.scrum.dao.mysql;
 
+import java.util.List;
+
 import com.scrum.model.ScrumUser;
 
 public interface ScrumUserMapper {
@@ -14,4 +16,6 @@ public interface ScrumUserMapper {
     int updateByPrimaryKeySelective(ScrumUser record);
 
     int updateByPrimaryKey(ScrumUser record);
+    
+    List<ScrumUser> selectSelective(ScrumUser user);
 }

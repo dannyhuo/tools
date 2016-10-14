@@ -76,6 +76,20 @@
 						<td><input type="text" name="elapsedTime"/></td>
 					</tr>
 					<tr>
+						<td align="right">任务认领人</td>
+						<td width="30"></td>
+						<td>
+							<select name="developer" onchange="javascript:this.parentNode.submit();">
+								<option value="">请选择认领人</option>
+								<#if developers?has_content>
+									<#list developers as developer>
+										<option value="${developer.userId}">${developer.realName}</option>
+									</#list>
+								</#if>
+							</select>
+						</td>
+					</tr>
+					<tr>
 						<td align="right">备注</td>
 						<td width="30"></td>
 						<td><input type="text" name="remark"/></td>
