@@ -1,0 +1,181 @@
+CREATE EXTERNAL TABLE lmmtmp.invited_register_record (
+ id BIGINT	comment'primary key' 
+ invite_user_id BIGINT	comment'邀请人用户ID' 
+ new_register_user_id BIGINT	comment'被邀请人新注册用户ID' 
+ new_register_user_no VARCHAR(32)	comment'新注册用户的user NO' 
+ new_register_user_mobile VARCHAR(32)	comment'新注册用户的user 手机号' 
+ invite_register_time TIMESTAMP	comment'注册时间' 
+ register_from VARCHAR(20)	comment'注册来源，PC，APP' 
+ rebate_status BIGINT	comment'给推荐人首笔订单的返现状态，0:首单未返，1：首单已返，2：首单已使用非返产品' 
+ remark VARCHAR(50)	comment'备注'
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '^'
+location '/input/invited_register_record';
+
+
+
+CREATE EXTERNAL TABLE lmmtmp.user_invite_code_mapping (
+ id bigint comment'primary key' 
+ user_id bigint comment'用户ID' 
+ invite_code varchar(10) comment'邀请码' 
+ invite_code_type bigint comment'邀请码类型' 
+ remark varchar(50) comment'备注'
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '^'
+location '/input/user_invite_code_mapping';
+
+
+
+SELECT
+ REPLACE(REPLACE(REPLACE(REPLACE(id , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') id ,
+ REPLACE(REPLACE(REPLACE(REPLACE(invited_user_id , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') invited_user_id ,
+ REPLACE(REPLACE(REPLACE(REPLACE(be_invited_user_id , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') be_invited_user_id ,
+ REPLACE(REPLACE(REPLACE(REPLACE(first_order_id , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') first_order_id ,
+ REPLACE(REPLACE(REPLACE(REPLACE(ought_reward_money , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') ought_reward_money ,
+ REPLACE(REPLACE(REPLACE(REPLACE(acture_reward_money , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') acture_reward_money ,
+ REPLACE(REPLACE(REPLACE(REPLACE(cal_date , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') cal_date ,
+ REPLACE(REPLACE(REPLACE(REPLACE(reward_ought_send_time , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') reward_ought_send_time ,
+ REPLACE(REPLACE(REPLACE(REPLACE(reward_actual_send_time , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') reward_actual_send_time ,
+ REPLACE(REPLACE(REPLACE(REPLACE(invite_reward_status , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') invite_reward_status ,
+ REPLACE(REPLACE(REPLACE(REPLACE(check_status , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') check_status ,
+ REPLACE(REPLACE(REPLACE(REPLACE(is_valid , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') is_valid ,
+ REPLACE(REPLACE(REPLACE(REPLACE(remark , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') remark
+FROM lvmama_user.reward_record
+
+
+CREATE EXTERNAL TABLE lmmtmp.reward_record (
+ id bigint comment'primary key',
+ invited_user_id bigint comment'邀请人用户ID',
+ be_invited_user_id bigint comment'被邀请人用户ID',
+ first_order_id bigint comment'首单ID',
+ ought_reward_money bigint comment'应返现金额，单位分',
+ acture_reward_money bigint comment'实返现金额，单位分',
+ cal_date timestamp comment'返利计算日期',
+ reward_ought_send_time timestamp comment'返利应发日期',
+ reward_actual_send_time timestamp comment'返利实际发放日期',
+ invite_reward_status bigint comment'返现发放状态：0:未返，1：已返，2：已取消',
+ check_status bigint comment'审核状态，0：未审核，1：审核通过，2：未审核通过',
+ is_valid bigint comment'是否有效，0：无效，1：有效',
+ remark varchar(50) comment'备注'
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '^'
+location '/input/reward_record';
+
+
+
+SELECT
+	REPLACE(REPLACE(REPLACE(REPLACE(id , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') id ,
+	REPLACE(REPLACE(REPLACE(REPLACE(order_id , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') order_id ,
+	REPLACE(REPLACE(REPLACE(REPLACE(user_no , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') user_no ,
+	REPLACE(REPLACE(REPLACE(REPLACE(invite_user_id , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') invite_user_id ,
+	REPLACE(REPLACE(REPLACE(REPLACE(user_id , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') user_id ,
+	REPLACE(REPLACE(REPLACE(REPLACE(visit_time , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') visit_time ,
+	REPLACE(REPLACE(REPLACE(REPLACE(create_time , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') create_time ,
+	REPLACE(REPLACE(REPLACE(REPLACE(update_time , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') update_time ,
+	REPLACE(REPLACE(REPLACE(REPLACE(payment_time , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') payment_time ,
+	REPLACE(REPLACE(REPLACE(REPLACE(cancel_time , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') cancel_time ,
+	REPLACE(REPLACE(REPLACE(REPLACE(refund_time , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') refund_time ,
+	REPLACE(REPLACE(REPLACE(REPLACE(ought_amount , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') ought_amount ,
+	REPLACE(REPLACE(REPLACE(REPLACE(actual_amount , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') actual_amount ,
+	REPLACE(REPLACE(REPLACE(REPLACE(refunded_amount , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') refunded_amount ,
+	REPLACE(REPLACE(REPLACE(REPLACE(order_status , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') order_status ,
+	REPLACE(REPLACE(REPLACE(REPLACE(view_order_status , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') view_order_status ,
+	REPLACE(REPLACE(REPLACE(REPLACE(payment_status , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') payment_status ,
+	REPLACE(REPLACE(REPLACE(REPLACE(refund_status , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') refund_status ,
+	REPLACE(REPLACE(REPLACE(REPLACE(category_id , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') category_id ,
+	REPLACE(REPLACE(REPLACE(REPLACE(first_order_status , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') first_order_status ,
+	REPLACE(REPLACE(REPLACE(REPLACE(calculate_status , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') calculate_status
+FROM lvmama_user.recommended_user_first_orders
+
+
+
+CREATE EXTERNAL TABLE lmmtmp.recommended_user_first_orders (
+	id bigint comment'primary key',
+	order_id bigint comment'订单ID',
+	user_no bigint comment'订单所属人的ID',
+	invite_user_id bigint comment'邀请人userId,此订单所属人的邀请人',
+	user_id varchar(32) comment'用户ID, user_user中的user_no',
+	visit_time timestamp comment'游玩时间',
+	create_time timestamp comment'订单创建时间',
+	update_time timestamp comment'更新时间',
+	payment_time timestamp comment'订单支付时间',
+	cancel_time timestamp comment'取消订单时间',
+	refund_time timestamp comment'退款时间',
+	ought_amount bigint comment'应付金额',
+	actual_amount bigint comment'实付金额',
+	refunded_amount bigint comment'退款金额',
+	order_status varchar(50) comment'订单状态',
+	view_order_status varchar(50) comment'展示订单状态',
+	payment_status varchar(50) comment'支付状态',
+	refund_status varchar(50) comment'退款状态',
+	category_id bigint comment'订单类别，见oracle表lvmama_ver.biz_category',
+	first_order_status bigint comment'首单状态，0：首单，1：已取消的首单，2：首单为非返现订单',
+	calculate_status bigint comment'计算状态，0：待算，1：已计算'
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '^'
+location '/input/recommended_user_first_orders';
+
+
+
+CREATE EXTERNAL TABLE lmmtmp.mobile_favorite (
+ id bigint comment'primary key',
+ object_id bigint comment'收藏产品ID或者商品ID',
+ object_type varchar(20) comment'PLACE:标的 ，PRODUCT:产品，GUIDE：攻略',
+ created_time timestamp comment'收藏时间',
+ object_image_url varchar(500) comment'收藏图片url',
+ object_name varchar(256) comment'收藏产品的名称',
+ is_valid varchar(20) comment'是否有效',
+ user_id bigint comment'收藏人的user_id',
+ market_sell_price varchar(20) comment'市场价',
+ data_from varchar(200) comment'default super',
+ bak2 varchar(200) comment'bak2',
+ current_version varchar(20) comment'当前版本号',
+ snapshot_sell_price varchar(20) comment'收藏时价格',
+ branchtype varchar(40) comment'团购、秒杀的类型PROD或者BRANCH，为了跳转详情用',
+ origin_id bigint comment'多出发地Id',
+ collection_from bigint comment'收藏来源，0:历史数据或未指明来源, 1:pc, 2:app'
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '^'
+location '/input/mobile_favorite';
+
+
+
+SELECT
+ REPLACE(REPLACE(REPLACE(REPLACE(id , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') id ,
+ REPLACE(REPLACE(REPLACE(REPLACE(object_id , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') object_id ,
+ REPLACE(REPLACE(REPLACE(REPLACE(object_type , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') object_type ,
+ REPLACE(REPLACE(REPLACE(REPLACE(created_time , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') created_time ,
+ REPLACE(REPLACE(REPLACE(REPLACE(object_image_url , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') object_image_url ,
+ REPLACE(REPLACE(REPLACE(REPLACE(object_name , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') object_name ,
+ REPLACE(REPLACE(REPLACE(REPLACE(is_valid , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') is_valid ,
+ REPLACE(REPLACE(REPLACE(REPLACE(user_id , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') user_id ,
+ REPLACE(REPLACE(REPLACE(REPLACE(market_sell_price , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') market_sell_price ,
+ REPLACE(REPLACE(REPLACE(REPLACE(data_from , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') data_from ,
+ REPLACE(REPLACE(REPLACE(REPLACE(bak2 , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') bak2 ,
+ REPLACE(REPLACE(REPLACE(REPLACE(current_version , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') current_version ,
+ REPLACE(REPLACE(REPLACE(REPLACE(snapshot_sell_price , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') snapshot_sell_price ,
+ REPLACE(REPLACE(REPLACE(REPLACE(branchtype , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') branchtype ,
+ REPLACE(REPLACE(REPLACE(REPLACE(origin_id , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') origin_id ,
+ REPLACE(REPLACE(REPLACE(REPLACE(collection_from , '^', ' '), '\r\n', ' '), '\r', ' '), '\n', ' ') collection_from
+FROM lvmama_user.mobile_favorite
+
+
+id
+ object_id
+ object_type
+ created_time
+ object_image_url
+ object_name
+ is_valid
+ user_id
+ market_sell_price
+ data_from
+ bak2
+ current_version
+ snapshot_sell_price
+ branchtype
+ origin_id
+ collection_from
+
+
+
